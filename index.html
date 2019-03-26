@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>APhevos- find your favourites!!!</title>
+
+  <!-- Custom fonts for this template-->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+  <!-- Custom styles for this template-->
+  <link href="css/sb-admin-2.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="styles/main.css"> 
+  <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet"> 
+  <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet"> --> 
+</head>
+
+<body id="page-top">
+<div data-co="loading-block" class="layout-center-column">
+    <div class="layout-center-column_main">
+      <p>Loading...</p>
+    </div>
+</div>
+  <div class="container" data-co="login-block">
+
+    <div class="row justify-content-center">
+
+      <div class="col-xl-10 col-lg-12 col-md-9">
+
+        <div class="card o-hidden border-0 shadow-lg my-5">
+          <div class="card-body p-0">
+            
+            <div class="row">
+              <div class="col-lg-6 d-none d-lg-block"><img src="img/webi1.png"></div>
+              <div class="col-lg-6">
+                <div class="p-5">
+                  <div class="text-center">
+                    <h2 class="h4 text-gray-900 mb-4">Welcome to PHEVOS</h2>
+                    <h1><b>Find your Favourites!</b></h1>
+                    <p><b>Social Linked Data Plateform</b></p>
+                    <p>Powered by <a href="https://www.webind.de" target="_blank">WEBIND</a> The Future</p>
+                    <p>Follow us on <a href="https://www.facebook.com/WEBINDprofile/" target="_blank">Facebook</a></p>
+                  </div>                              
+                    <button data-co="login-btn" class="btn btn-primary btn-user btn-block">login</button>
+                    <hr>
+                    <a href="https://solid.community/register" target="_blank" class="btn btn-outline-primary btn-user btn-block">
+                       Create Account via SOLID
+                    </a>
+                       <hr>
+                    <a href="https://inrupt.net/register" target="_blank" class="btn btn-outline-primary btn-user btn-block">
+                     Create Account via INRUPT
+                    </a>                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+<!-- <div data-co="login-block" class="layout-center-column" style="background-image: url('styles/img/photos/blue.jpg');">
+    <div class="layout-center-column_main">
+      <p>You are not logged in.</p>
+      <button data-co="login-btn" class="btn btn-primary">login<i class="fa fa-arrow-right pull-right"></i></button>
+      <p>Welcome to <b>PHEVOS</b>!</p>
+      <p>Powered by WebInd The Future <a href="https://www.webind.de" target="_blank">WEBIND</a></p>
+      <p>Follow us on <a href="https://www.facebook.com/WEBINDprofile/" target="_blank">Facebook</a></p>
+    </div>
+</div>
+ -->
+<!-- Page Wrapper -->
+<div data-co="logout-block" style="display: none;">
+  
+  <div id="wrapper">
+
+    <!-- Sidebar -->
+    <div class="side-content tab d-flex flex-column">
+     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+      <!-- Sidebar - Brand -->
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+        <img class="img-profile rounded-circle" src="img/logo1.png">
+        <div class="sidebar-brand-text mx-3">PHEVOS <sup>A</sup></div>
+      </a>
+      <hr class="sidebar-divider my-0">
+
+      <li class="nav-item active" id="defaultOpen" onclick="openCity(event, 'Filema')">
+        <a class="nav-link" href="">
+          <i class="fas fa-fw fa-tachometer-alt"></i>
+          <span>Dashboard</span></a>
+      </li>
+      <hr class="sidebar-divider">
+      
+      <li class="nav-item"  onclick="openCity(event, 'Friends')">
+        <a class="nav-link collapsed" href="#Friends">
+          <i class="fas fa-fw fa-user"></i>
+          <span>Friends</span>  
+        </a>
+      </li>
+      <hr class="sidebar-divider">
+
+      <!-- <li class="nav-item" onclick="openCity(event, 'PROFILE')">
+        <a class="nav-link" href="#PROFILE">
+          <i class="fas fa-fw fa-clipboard-list"></i>
+          <span>User Profile</span>
+        </a>       
+      </li>
+      <hr class="sidebar-divider"> -->
+
+      <li class="nav-item" onclick="openCity(event, 'Events')">
+        <a class="nav-link" href="#Events">
+          <i class="fas fa-fw fa-clipboard-list"></i>
+          <span>Events</span>
+        </a>       
+      </li>
+      <hr class="sidebar-divider">
+  
+      <!-- <li class="nav-item" onclick="openCity(event, 'CHAT')">
+        <a class="nav-link" href="#CHAT">
+          <i class="fas fa-comments"></i>
+          <span>Chats</span></a>
+      </li>
+      <hr class="sidebar-divider"> -->
+     
+      <li class="nav-item" onclick="openCity(event, 'Help')">
+        <a class="nav-link" href="#Help">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Help</span></a>
+      </li>
+      <hr class="sidebar-divider d-none d-md-block">
+
+      <!-- Sidebar Toggler (Sidebar) -->
+      <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+      </div>
+     </ul>
+    </div>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+   <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+        <!-- Topbar -->
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+          <!-- Sidebar Toggle (Topbar) -->
+          <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+            <i class="fa fa-bars"></i>
+          </button>
+
+          <!-- Topbar Search -->
+          <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" data-co="navigation-form">
+            <div class="input-group">
+              <button class="btn btn-primary" type="reset" data-co="navigation-back-btn">Back</button>
+              <input data-co="navigation-url" class="form-control" id="base-material-text" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+              <div class="input-group-append">
+                <button class="btn btn-primary" type="button">
+                  <i class="fas fa-search fa-sm"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+          <!-- Topbar Navbar -->
+          <ul class="navbar-nav ml-auto">
+
+            <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+            <li class="nav-item dropdown no-arrow d-sm-none">
+              <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-search fa-fw"></i>
+              </a>
+              <!-- Dropdown - Messages -->
+              <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
+                <form class="form-inline mr-auto w-100 navbar-search">
+                  <div class="input-group">
+                    <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                      <button class="btn btn-primary" type="button">
+                        <i class="fas fa-search fa-sm"></i>
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </li>
+
+            <!-- Nav Item - Alerts -->
+            <li class="nav-item dropdown no-arrow mx-1">
+              <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-bell fa-fw"></i>
+                <!-- Counter - Alerts -->
+                <span class="badge badge-danger badge-counter">3+</span>
+              </a>
+              <!-- Dropdown - Alerts -->
+              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
+                <h6 class="dropdown-header">
+                  Alerts Center
+                </h6>
+                <a class="dropdown-item d-flex align-items-center" href="#">
+                  <div class="mr-3">
+                    <div class="icon-circle bg-primary">
+                      <i class="fas fa-file-alt text-white"></i>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="small text-gray-500">December 12, 2019</div>
+                    <span class="font-weight-bold">A new monthly report is ready to download!</span>
+                  </div>
+                </a>
+                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+              </div>
+            </li>
+
+            <!-- Nav Item - Messages -->
+            <li class="nav-item dropdown no-arrow mx-1">
+              <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-envelope fa-fw"></i>
+                <!-- Counter - Messages -->
+                <span class="badge badge-danger badge-counter">7</span>
+              </a>
+              <!-- Dropdown - Messages -->
+              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
+                <h6 class="dropdown-header">
+                  Message Center
+                </h6>
+                <a class="dropdown-item d-flex align-items-center" href="#">
+                  <div class="dropdown-list-image mr-3">
+                    <img class="rounded-circle" src="https://source.unsplash.com/fn_BT9fwg_E/60x60" alt="">
+                    <div class="status-indicator bg-success"></div>
+                  </div>
+                  <div class="font-weight-bold">
+                    <div class="text-truncate">Hi there! I am wondering if you can help me with a problem I've been having.</div>
+                    <div class="small text-gray-500">Emily Fowler · 58m</div>
+                  </div>
+                </a>
+                <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
+              </div>
+            </li>
+
+            <div class="topbar-divider d-none d-sm-block"></div>
+
+            <!-- Nav Item - User Information -->
+            <li class="nav-item dropdown no-arrow">
+              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Name</span>
+                <img class="img-profile rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/600x800">
+              </a>
+              <!-- Dropdown - User Information -->
+              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                <a class="dropdown-item" href="#">
+                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Profile
+                </a>
+                
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Logout
+                </a>
+              </div>
+            </li>
+          </ul>
+        </nav>
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+
+          <div class="row">
+
+            <!-- Area Chart -->
+            <div class="col-xl-12 col-lg-3">
+              <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-primary"> ID: <span data-co="user-label"></span></h6>
+                  <div class="dropdown no-arrow">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                      <div class="dropdown-header">View Option:</div>
+                      <li  onclick="openCity(event, 'Filema')"><a class="dropdown-item" href="#Filema">File Structure</a> </li>
+                      <li  onclick="openCity(event, 'Gallery')"><a class="dropdown-item" href="#Gallery">Gallery</a> </li>
+                    </div>
+                  </div>
+                </div>
+                <!-- Card Body -->              
+                <div class="card-body"><div class="content">
+                  
+                  <div id="Help" class="tabcontent">
+                    <h2>COOL VOICE FEATURE</h2>
+                    <p>you will get all Information about Phevos here. Press on Mic icon and say hello or Hi. It will get your voice and give you Welcome Output.</p>
+                    
+                    <iframe width="950" height="350" allow="microphone;" src="https://console.dialogflow.com/api-client/demo/embedded/5503bf89-a17e-47e3-a71e-87f260615805"></iframe>                  
+                  </div>
+                  <div id="CHAT" class="tabcontent">
+                    <h3>Chat Box</h3>
+                    <p>you will see Chat Box in coming days.</p>
+                  </div>
+                  <!-- start friends -->
+                  <div id="Friends" class="tabcontent">
+
+                    <h1 class="h2 text-green animated zoomIn">Friends</h1>
+                    <p>
+                      <input type="text" id="profile" class="form-control" placeholder="Search your friends.." title="Type in a name" aria-label="Search" aria-describedby="basic-addon2">
+                      <button id="view">View</button>
+                    </p>
+                    
+                    <dl id="viewer">
+                      <dt>Full name</dt>
+                      <div class="chip">
+                      <img src="https://img.icons8.com/color/48/000000/administrator-male.png" alt="Person" width="96" height="96"><ul id="fullName"></ul></div>
+                      
+                        <dt>Friends</dt>
+                        <div class="chip">
+                     <img src="https://img.icons8.com/bubbles/50/000000/groups.png" alt="Person" width="96" height="96"><ul id="friends"></ul></div>
+                    </dl> 
+                  </div> 
+                  <!-- END friends -->
+                  <div id="PROFILE" class="tabcontent">
+                    <h3>User Data</h3>
+                    <p>you will see Profile in coming days.</p>
+                  </div>
+                  <div id="Events" class="tabcontent">
+                    <h3>Events</h3>
+                    <p>you will see Events in coming days.</p>
+                  </div>
+                  <!-- start file manager-->
+                  <div id="Filema" class="tabcontent">
+                    <h4>File Structure</h4>
+                    <div class="btnline mb1">
+                    <button class="basebtn __gray" data-co="btn-create-folder">Create resource</button>
+                    <label class="basebtn __gray">
+                    <input type="file" data-co="btn-upload" class="sc_invisible"><span>Upload files</span>
+                    </label>
+                    <input type="text" id="myInput" class="form-control bg-light border-0 small" onkeyup="myFunction()" placeholder="Search your favourites.." title="Type in a name" aria-label="Search" aria-describedby="basic-addon2" style="width: 400px;">
+                    </div>
+                      
+                    <!-- <input  class="form-control" id="base-material-text" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2"> -->
+                   
+                    <div class="navigation-table_wrap">
+                      <table id="dataTable" class="table table-bordered table-striped js-dataTable-full">
+                        <thead>
+                          <tr>
+                            <td class="navigation-table_th"><div >File name</div></td>
+                            <td class="navigation-table_th">File type</td>
+                            <td class="navigation-table_th" data-co="file-table-sort-by-modification-time" data-action="">Modification time</td>
+                            <td class="navigation-table_th">Size (B)</td>
+                            <td class="navigation-table_th">Controls</td>
+                          </tr>
+                        </thead>
+                        <tbody data-co="navigation-table-body"></tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div id="Gallery" class="tabcontent">
+                  <h4>Gallery</h4>
+                    <div class="btnline mb1">
+                    <button class="basebtn __gray" data-co="btn-create-folder">Create resource</button>
+                    <label class="basebtn __gray">
+                    <input type="file" data-co="btn-upload" class="sc_invisible"><span>Upload files</span>
+                    </label>
+                    </div>
+                    <div data-co="photo-display" ></div>
+                  </div>
+                  <!-- END file manager -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <!-- End of Main Content -->   
+      </div>
+      <!-- End of Content Wrapper -->
+      <!-- Footer -->
+      <footer class="sticky-footer bg-white">
+        <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+            <span>Copyright &copy; WEBIND 2019</span>
+          </div>
+        </div>
+      </footer>
+      <!-- End of Footer -->
+       </div>
+   </div>
+   <!-- End of Page Wrapper -->
+
+   <!-- Scroll to Top Button-->
+   <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+   </a>
+
+   <!-- Logout Modal-->
+   <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+          <button class="btn btn-primary" data-co="logout-btn">Logout</button>
+        </div>
+      </div>
+    </div>
+   </div>
+  </div>
+</div>
+  <!-- Bootstrap core JavaScript-->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="js/sb-admin-2.min.js"></script>
+
+  <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+  <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+  <script src="js/demo/datatables-demo.js"></script>
+  
+  <script src="js/jquery.js"></script>
+  <script src="libs/solid-auth-client.bundle.js"></script>
+  <script src="libs/rdflib.min.js"></script>
+  <script src="scripts/controllers/index.controller.js" type="module"></script>
+  <!-- <script src="scripts/controllers/profile.controller.js" type="module"></script> -->
+  
+  <!-- Tabs scripts -->
+  <script>
+    function openCity(evt, cityName) { 
+      var i, tabcontent, tablinks;
+      tabcontent = document.getElementsByClassName("tabcontent"); 
+            for (i = 0; i < tabcontent.length; i++) { 
+        tabcontent[i].style.display = "none";
+      }
+      tablinks = document.getElementsByClassName("tablinks");
+      for (i = 0; i < tablinks.length; i++) {
+          tablinks[i].className = tablinks[i].className.replace(" active", ""); 
+      } 
+      document.getElementById(cityName).style.display = "block";
+      evt.currentTarget.className += " active";
+      } 
+      // Get the element with id="defaultOpen" and click on it , distribute tabs
+      document.getElementById("defaultOpen").click();
+  </script>
+
+  <!-- Filtering Data scripts -->
+  <script>
+    function myFunction() {
+      var input, filter, table, tr, td, i, txtValue;
+      input = document.getElementById("myInput");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("dataTable");
+      tr = table.getElementsByTagName("tr");
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[0];
+        if (td) {
+          txtValue = td.textContent || td.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .chip {
+      display: inline-block;
+      padding: 0 35px;
+      height: 50px;
+      font-size: 12px;
+      line-height: 50px;
+      border-radius: 25px;
+      background-color: #f1f1f1;
+    }
+    .chip img {
+      float: left;
+      margin: 0 10px 0 -25px;
+      height: 50px;
+      width: 50px;
+      border-radius: 50%;
+    }
+  </style>
+</body>
+
+</html>
