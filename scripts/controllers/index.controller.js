@@ -324,7 +324,7 @@ _storage.bindEvents({
 					<button class="far fa-trash-alt btn-xs btn btn-danger" data-action="remove" title="Delete"></button>
 					<button class="far fa-arrow-alt-circle-down btn btn-primary btn-xs" data-action="download" title="Download"></button>
 				    <button class="far fa-star btn btn-info btn-xs" data-action="info" title="Privilege"></button>
-			    	// <button class="fas fa-link btn-xs btn btn-success" data-action="link" title="Get link"></button> 
+			    	
 				</td>
 		
 			`: `<td><span data-href="${node.uri}" data-action="navigate">${node.name}</span></td>
