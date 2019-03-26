@@ -391,12 +391,8 @@ solid.auth.trackSession(async (session) => {
 		_storage.url = _hash.state.url || $rdf.sym(session.webId).site().uri;
 		_storage.webId = session.webId;
 		_storage.$webId = $rdf.sym(session.webId);
-	} else {
-		CONTROLS.userLabel.textContent = '';		
-	}
-});
- 
-$('#view').click(async function loadProfile() {
+		
+		$('#view').click(async function loadProfile() {
   // Set up a local data store and associated data fetcher
   const store = $rdf.graph();
   const fetcher = new $rdf.Fetcher(store);
@@ -422,3 +418,9 @@ $('#view').click(async function loadProfile() {
                 .click(loadProfile)));
   });
 });
+	} else {
+		CONTROLS.userLabel.textContent = '';		
+	}
+});
+ 
+
