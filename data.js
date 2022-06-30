@@ -1,4 +1,5 @@
 import { colors } from './colors';
+import { samples } from './datasample';
 
 export const nodes = [];
 export const links = [];
@@ -36,13 +37,17 @@ const addChildNode = (
   });
 };
 
-const assembleChildNode = (parentNode, id, numLeaves = 20) => {
-  const childNode = { id };
-  addChildNode(parentNode, childNode);
-
-  for (let i = 0; i < numLeaves; i++) {
-    addChildNode(childNode, { id: '' }, LEAF_NODE_SIZE, LEAF_NODE_DISTANCE);
-  }
+const assembleChildNode = (parentNode, id, addnode, reso) => {
+    const childNode = { id };
+    addChildNode(parentNode, childNode);
+    const agents = samples.agents_log[addnode];
+  
+    for (let i = 0; i < samples.agents_log[addnode].length; i++) {
+      if(agents[i].other_agent === parentNode.id && agents[i].resource_id === reso){
+        addChildNode(childNode, { id: '' }, LEAF_NODE_SIZE, LEAF_NODE_DISTANCE);
+      }
+      continue;
+    }
 };
 
 const connectMainNodes = (source, target) => {
@@ -54,37 +59,21 @@ const connectMainNodes = (source, target) => {
   });
 };
 
-const artsWeb = { id: 'Arts Web' };
-addMainNode(artsWeb);
-assembleChildNode(artsWeb, 'Community Vision');
-assembleChildNode(artsWeb, 'Silicon Valley Creates');
+const allagents = Object.keys(samples.agents_log);
 
-const socialImpactCommons = { id: 'Social Impact Commons' };
-addMainNode(socialImpactCommons);
-assembleChildNode(socialImpactCommons, 'Theatre Bay Area');
-assembleChildNode(socialImpactCommons, 'EastSide Arts Alliance');
-assembleChildNode(socialImpactCommons, 'Local Color');
+let castp = [];
+allagents.forEach((element, index) => {    
+  castp[index] = { id: element };
+  addMainNode(castp[index]);
+});
 
-const cast = { id: 'Community Arts Stabilization Trust' };
-addMainNode(cast);
-assembleChildNode(cast, 'CounterPulse');
-assembleChildNode(cast, 'Luggage Store Gallery');
-assembleChildNode(cast, 'Performing Arts Workshop');
-assembleChildNode(cast, '447 Minna St.', 5);
-assembleChildNode(cast, 'Keeping Space Oakland');
-
-const ambitioUS = { id: 'AmbitioUS' };
-addMainNode(ambitioUS);
-assembleChildNode(ambitioUS, 'EBPREC');
-assembleChildNode(ambitioUS, 'SELC', 3);
-assembleChildNode(ambitioUS, 'The Runway Project', 3);
-assembleChildNode(ambitioUS, 'Common Future', 3);
-assembleChildNode(ambitioUS, 'Freelancers Union', 3);
-assembleChildNode(ambitioUS, 'US Federation of Worker Cooperatives', 3);
-
-connectMainNodes(artsWeb, socialImpactCommons);
-connectMainNodes(artsWeb, cast);
-connectMainNodes(socialImpactCommons, cast);
-connectMainNodes(ambitioUS, cast);
-connectMainNodes(ambitioUS, socialImpactCommons);
-connectMainNodes(ambitioUS, artsWeb);
+for (let i = 0; i < samples.trustLogDict.length; i++) {
+  
+  const first = castp.findIndex(element => element.id === samples.trustLogDict[i].agent);
+  const second = castp.findIndex(element => element.id === samples.trustLogDict[i].other_agent);
+  
+  connectMainNodes(castp[first], castp[second]);
+  
+  let str = samples.trustLogDict[i].resource_id;
+  assembleChildNode(castp[second], str.charAt(0),castp[first].id, str);
+}
