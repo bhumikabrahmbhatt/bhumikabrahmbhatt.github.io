@@ -80,10 +80,10 @@
   const nodes = [];
   const links = [];
 
-  const MAIN_NODE_SIZE = 40;
+  const MAIN_NODE_SIZE = 25;
   const CHILD_NODE_SIZE = 15;
   const LEAF_NODE_SIZE = 5;
-  const DEFAULT_DISTANCE = 20;
+  const DEFAULT_DISTANCE = 60;
   const MAIN_NODE_DISTANCE = 90;
   const LEAF_NODE_DISTANCE = 30;
   const MANY_BODY_STRENGTH = -20;
