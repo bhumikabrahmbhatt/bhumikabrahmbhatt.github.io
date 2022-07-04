@@ -1,5 +1,5 @@
 import { colors } from './colors';
-import { samples } from './datasample';
+import { samples } from './samples';
 
 export const nodes = [];
 export const links = [];
@@ -16,18 +16,20 @@ let i = 0;
 
 const addMainNode = (node) => {
   node.size = MAIN_NODE_SIZE;
-  node.color = colors[i++][1];
+  node.color = colors[i++][0];
   nodes.push(node);
 };
 
 const addChildNode = (
   parentNode,
   childNode,
+  selectagent,
   size = CHILD_NODE_SIZE,
   distance = DEFAULT_DISTANCE
 ) => {
   childNode.size = size;
   childNode.color = parentNode.color;
+  childNode.selectedagent = selectagent;
   nodes.push(childNode);
   links.push({
     source: parentNode,
@@ -37,17 +39,17 @@ const addChildNode = (
   });
 };
 
-const assembleChildNode = (parentNode, id, addnode, reso) => {
-    const childNode = { id };
-    addChildNode(parentNode, childNode);
-    const agents = samples.agents_log[addnode];
-  
-    for (let i = 0; i < samples.agents_log[addnode].length; i++) {
-      if(agents[i].other_agent === parentNode.id && agents[i].resource_id === reso){
-        addChildNode(childNode, { id: '' }, LEAF_NODE_SIZE, LEAF_NODE_DISTANCE);
-      }
-      continue;
+const assembleChildNode = (parentNode, id, addnode, reso, selectagent) => { 
+  const childNode = { id };
+  addChildNode(parentNode, childNode, selectagent);
+
+  const agents = samples.agents_log[addnode];
+  for (let i = 0; i < samples.agents_log[addnode].length; i++) {
+    if(agents[i].other_agent === parentNode.id && agents[i].resource_id === reso){
+      addChildNode(childNode, { id: '' }, agents[i], LEAF_NODE_SIZE , LEAF_NODE_DISTANCE);
     }
+    continue;
+  }
 };
 
 const connectMainNodes = (source, target) => {
@@ -62,18 +64,18 @@ const connectMainNodes = (source, target) => {
 const allagents = Object.keys(samples.agents_log);
 
 let castp = [];
-allagents.forEach((element, index) => {    
+allagents.forEach((element, index) => {
   castp[index] = { id: element };
   addMainNode(castp[index]);
 });
 
 for (let i = 0; i < samples.trustLogDict.length; i++) {
-  
   const first = castp.findIndex(element => element.id === samples.trustLogDict[i].agent);
   const second = castp.findIndex(element => element.id === samples.trustLogDict[i].other_agent);
-  
+
   connectMainNodes(castp[first], castp[second]);
-  
+
   let str = samples.trustLogDict[i].resource_id;
-  assembleChildNode(castp[second], str.charAt(0),castp[first].id, str);
+  let pp = samples.trustLogDict[i];
+  assembleChildNode(castp[second], str.charAt(0),castp[first].id, str, pp);
 }
