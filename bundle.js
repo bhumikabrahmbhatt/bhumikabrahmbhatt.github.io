@@ -144,10 +144,10 @@
     });
   };
 
-  const allagents$1 = Object.keys(samples.agents_log);
+  const allagents = Object.keys(samples.agents_log);
 
   let castp = [];
-  allagents$1.forEach((element, index) => {
+  allagents.forEach((element, index) => {
     castp[index] = { id: element };
     addMainNode(castp[index]);
   });
