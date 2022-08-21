@@ -1,0 +1,72 @@
+<!DOCTYPE html><html><head>
+    <title>Interactive Visualisation of trust relationships</title>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+        font-family: sans-serif;
+      }
+      .sidenav {
+      height: 100%;
+      width: 350px;
+      position: fixed;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      background-color: #F5F5F5;
+      overflow-x: hidden;
+      padding-top: 20px;
+      }
+      
+      .sidenav {
+      padding: 6px 8px 6px 16px;
+      text-decoration: none;
+      font-size: 15px;
+      display: block;
+      }
+
+      .sidenav a:hover {
+      color: #54c4e6;
+      }
+
+      .main {
+      /*margin-left: 350px;  Same as the width of the sidenav */
+      font-size: 28px; /* Increased text to enable scrolling */
+      padding: 10px 10px;
+      }
+
+      @media screen and (max-height: 450px) {
+      .sidenav {padding-top: 15px;}
+      .sidenav a {font-size: 18px;}
+      }
+    </style>
+    <script src="https://d3js.org/d3.v7.min.js" charset="utf-8"></script>
+  </head>
+  <body>
+    <div class="main" style="text-align:center;">
+      <svg id="container" width="1400" height="1000"></svg>  
+    </div>
+    <div class="sidenav">
+      <button id="zoomIn">Zoom in</button>
+      <button id="zoomOut">Zoom out</button>
+      <button id="resetZoom">Reset zoom</button>
+      <button id="panLeft">Pan left</button>
+      <button id="panRight">Pan right</button>
+      <button id="center">Center</button>
+
+      <input type="range" min="200" max="1000" step="50" value="300" class="slider" id="myRange">
+
+      <div style="padding-top: 30px; ">
+        <p>All Agents: <span id="allagents"></span></p>
+        <p>Selected Agent:  <span id="selectedagent"></span></p>
+      </div>
+
+      <div id="trustlog"></div>
+      <div id="agentlog"></div>
+    </div>
+    
+    <script src="index.js" type="module"></script>
+  
+<script src="bundle1.js"></script>
+</body>
+</html>
