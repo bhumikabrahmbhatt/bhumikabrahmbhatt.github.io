@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Interactive Visualisation of trust relationships</title>
-    <style>
-      body {
-        margin: 0;
-        overflow: hidden;
-        font-family: sans-serif;
-      }
-      .sidenav {
+
+<head>
+  <title>Interactive Visualisation of trust relationships</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      font-family: sans-serif;
+    }
+
+    .sidenav {
       height: 100%;
-      width: 350px;
+      width: 400px;
       position: fixed;
       z-index: 1;
       top: 0;
@@ -18,70 +20,358 @@
       background-color: #F5F5F5;
       overflow-x: hidden;
       padding-top: 20px;
-      }
+    }
 
-      .sidenav {
+    .sidenav {
       padding: 6px 8px 6px 16px;
       text-decoration: none;
       font-size: 15px;
       display: block;
-      }
+    }
 
-      .sidenav a:hover {
+    .sidenav a:hover {
       color: #54c4e6;
-      }
+    }
 
-      .main {
-      /*margin-left: 350px;  Same as the width of the sidenav */
-      font-size: 28px; /* Increased text to enable scrolling */
+    .main {
+      font-size: 28px;
       padding: 10px 10px;
+    }
+
+    @media screen and (max-height: 450px) {
+      .sidenav {
+        padding-top: 15px;
       }
 
-      @media screen and (max-height: 450px) {
-      .sidenav {padding-top: 15px;}
-      .sidenav a {font-size: 18px;}
+      .sidenav a {
+        font-size: 18px;
       }
-    </style>
-    <script src="https://d3js.org/d3.v7.min.js" charset="utf-8"></script>
-  </head>
-  <body>
-    <div class="main" style="text-align:center;">
-      <svg id="container" width="1400" height="1000"></svg>  
+    }
+  </style>
+</head>
+
+<body>
+  <div class="main" style="text-align:center;">
+    <svg id="container" width="1400" height="1000"></svg>
+  </div>
+  <div class="sidenav">
+    <button id="zoomIn">Zoom in</button>
+    <button id="zoomOut">Zoom out</button>
+    <button id="resetZoom">Reset zoom</button>
+    <button id="panLeft">Pan left</button>
+    <button id="panRight">Pan right</button>
+    <button id="center">Center</button>
+
+    <input type="range" min="200" max="1000" step="50" value="300" class="slider" id="myRange">
+
+    <div style="padding-top: 30px; ">
+      <p>All Agents: <span id="allagents"></span></p>
+      <p>Selected Agent: <span id="selectedagent"></span></p>
+      <p><span id="selectedagenttext"></span></p>
     </div>
-    <div class="sidenav">
-      <button id="zoomIn">Zoom in</button>
-      <button id="zoomOut">Zoom out</button>
-      <button id="resetZoom">Reset zoom</button>
-      <button id="panLeft">Pan left</button>
-      <button id="panRight">Pan right</button>
-      <button id="center">Center</button>
 
-      <input type="range" min="20" max="200" step="5" value="50" class="slider" id="myRange">
+    <div id="trustlog"></div>
+    <div id="agentlog"></div>
+  </div>
 
-      <div style="padding-top: 30px; ">
-        <p>All Agents: <span id="allagents"></span></p>
-        <p>Selected Agent:  <span id="selectedagent"></span></p>
-      </div>
+  <script type="module">
+    import * as d3 from 'https://unpkg.com/d3?module'
 
-      <div id="trustlog" style="padding-top: 20px; display: none;">
-        <p><strong> Trust log info </strong></p>
-        <p>Agent:  <span id="agent"></span></p>
-        <p>Date Time:  <span id="datetime"></span></p>
-        <p>Other agent:  <span id="otheragent"></span></p>
-        <p>Resource ID:  <span id="resourceid"></span></p>
-        <p>Trust value:  <span id="trustvalue"></span></p>
-      </div>
+    import { samples } from './samples.js';
 
-      <div id="agentlog" style="padding-top: 20px; display: none;">
-        <p><strong> Agents log info </strong></p>
-        <p>Date Time:  <span id="adatetime"></span></p>
-        <p>Metric string:  <span id="metricstring"></span></p>
-        <p>Other agent:  <span id="aotheragent"></span></p>
-        <p>Resource ID:  <span id="aresourceid"></span></p>
-        <p>Trust value:  <span id="atrustvalue"></span></p>
-      </div>
-    </div>
-    
-    <script src="bundle.js"></script>
-  </body>
+    const nodes = [];
+const links = [];
+
+const MAIN_NODE_SIZE = 20;
+const MAIN_NODE_DISTANCE = 140;
+
+let i=0;
+
+const addMainNode = (node) => {
+  node.size = MAIN_NODE_SIZE;
+  node.color = '#' + (0x1000000 + (Math.random()) * 0xffffff).toString(16).substr(1, 6);
+  nodes.push(node);
+};
+
+const connectMainNodes = (source, target, resource, datetime, trustvalue) => {
+  links.push({
+    source,
+    target,
+    resource,
+    datetime,
+    trustvalue,
+    distance: MAIN_NODE_DISTANCE,
+    color: target.color
+  });
+};
+
+const allagents = Object.keys(samples.agentsLog);
+
+let castp = [];
+allagents.forEach((element, index) => {
+  castp[index] = { id: index, agent: element };
+  addMainNode(castp[index]);
+});
+
+
+for (i = 0; i < samples.trustLog.length; i++) {
+  const first = castp.findIndex(element => element.agent === samples.trustLog[i].agent);
+  const second = castp.findIndex(element => element.agent === samples.trustLog[i].other_agent);
+  const resource = samples.trustLog[i].resource_id;
+  const datetime = samples.trustLog[i].date_time;
+  const trustvalue = samples.trustLog[i].trust_value;
+
+  connectMainNodes(castp[second], castp[first], resource, datetime, trustvalue);
+}
+
+const svg = d3.select('#container');
+const width = +svg.attr('width');
+const height = +svg.attr('height');
+const centerX = width / 2;
+const centerY = height / 2;
+
+var rangeSlider = document.getElementById('myRange');
+rangeSlider.addEventListener('change', function(event,a,b) {
+  simulation.force("link").links(links).distance(event.target.value);
+  simulation.alpha(1);
+  simulation.restart();
+})
+
+const simulation = d3.forceSimulation(nodes)
+  .force('charge', d3.forceManyBody().strength(-30))
+  .force(
+    'link',
+    d3.forceLink(links).distance(rangeSlider.value) // (link) => link.distance
+  )
+  .force('center', d3.forceCenter(centerX, centerY));
+
+const dragInteraction = d3.drag().on('drag', (event, node) => {
+  node.fx = event.x;
+  node.fy = event.y;
+  simulation.alpha(1);
+  simulation.restart();
+});
+
+svg.append('defs').append("marker")
+  .attr("id", "end")
+  .attr("viewBox", "0 0 10 10")
+  .attr("refX", "18")
+  .attr("refY", "5")
+  .attr("markerWidth", "5")
+  .attr("markerHeight", "5")
+  .attr('markerUnits', 'strokeWidth')
+  .attr("xoverflow", "visible")
+  .attr("orient", "auto")
+  .append("path")
+  .attr('fill', 'black')
+  .attr("d", "M 0 0 L 10 5 L 0 10 z");
+
+const lines = svg
+  .selectAll('line')
+  .data(links)
+  .enter()
+  .append('path')
+  .style("stroke-width", 5)
+  .attr('stroke', (link) => link.color || 'black')
+  .attr("class", "link")
+  .attr('marker-end','url(#end)');
+
+const circles = svg
+  .append("g")
+  .attr("class", "circles")
+  .selectAll('circle')
+  .data(nodes)
+  .enter()
+  .append('circle')
+  .attr('fill', (node) => node.color || 'gray')
+  .attr('r', (node) => node.size)
+  .style("stroke", 'black')
+  .call(dragInteraction);
+
+d3.select("#allagents").selectAll("p").data(allagents).enter()
+.append("text")
+.text(function(ag){
+    return ag+" ";
+})
+
+circles.on("click", function(d, agent) {
+  document.getElementById("trustlog").innerHTML = ""; 
+  document.getElementById("agentlog").innerHTML = "";
+  d3.select("#selectedagent").text(agent.agent);
+})
+.on('mouseover', function(event,d){
+  circles.style('fill', n=>n.id === d.id  ? n.color : '#b8b8b8')
+  lines.style('stroke', a=>  a.target.id === d.id || a.source.id === d.id ? a.color : '#b8b8b8')
+    .style('stroke-width', a=>a.target.id === d.id || a.source.id === d.id ? 5 : 1)
+})
+.on('mouseout', function(event,d){
+  circles.style('fill', (node) => node.color)
+  lines.style('stroke', (link) => link.color || 'black').style('stroke-width', 5)
+})
+
+const agents = samples.agentsLog;
+
+var agentlogElements = "";
+var trustlogElements = "";
+
+lines.on("click", function (d, trustlog) {
+            agentlogElements = "";
+            document.getElementById("trustlog").innerHTML = "";
+
+            trustlogElements = `<div id="trustlog" style="width:60%">
+                <p><b> Trust log info </b></p>
+                <p>Agent:  <span id="agent">`+ trustlog.target.agent + `</span></p>
+                <p>Date Time:  <span id="datetime">`+ trustlog.datetime + `</span></p>
+                <p>Other agent:  <span id="otheragent">`+ trustlog.source.agent + `</span></p>
+                <p>Resource ID:  <span id="resourceid">`+ trustlog.resource + `</span></p>
+                <p>Trust value:  <span id="trustvalue">`+ trustlog.trustvalue + `</span></p>      
+                </div>`;
+
+            for (let i = 0; i < agents[trustlog.target.agent].length; i++) {
+                if (agents[trustlog.target.agent][i].resource_id === trustlog.resource &&
+                    agents[trustlog.target.agent][i].other_agent === trustlog.source.agent) {
+                    agentlogElements += `<div id="agentlog" style="width:60%">
+                <p><b> Agents log info </b></p>
+                <p>Date Time:  <span class="adatetime">`+ agents[trustlog.target.agent][i].date_time + `</span></p>
+                <p>Metric string:  <span class="metricstring">`+ agents[trustlog.target.agent][i].metric_str + `</span></p>
+                <p>Other agent:  <span class="aotheragent">`+ agents[trustlog.target.agent][i].other_agent + `</span></p>
+                <p>Resource ID:  <span class="aresourceid">`+ agents[trustlog.target.agent][i].resource_id + `</span></p>
+                <p>Trust value:  <span class="atrustvalue">`+ agents[trustlog.target.agent][i].trust_value + `</span></p>      
+                </div>`;
+                }
+                else {
+                    continue;
+                }
+            }
+
+            document.getElementById("trustlog").innerHTML = trustlogElements;
+            document.getElementById("agentlog").innerHTML = "";
+            document.getElementById("agentlog").innerHTML = agentlogElements;
+        })
+            .on('mouseover', function (event, d) {
+                circles.style('fill', n => n.id === d.source.id || n.id === d.target.id ? n.color : '#b8b8b8')
+                lines.style('stroke', a => a.source.id === d.source.id && a.resource === d.resource && a.target.id === d.target.id ? d.color : '#b8b8b8')
+                    .style('stroke-width', 5)
+                    .style('cursor', 'pointer')
+            })
+            .on('mouseout', function (event, d) {
+                circles.style('fill', (node) => node.color)
+                lines.style('stroke', (link) => link.color || 'black').style('stroke-width', 5)
+            });
+
+
+const text = svg
+  .selectAll('text')
+  .data(nodes)
+  .enter()
+  .append('text')
+  .attr('text-anchor', 'middle')
+  .attr('alignment-baseline', 'middle')
+  .style('pointer-events', 'none')
+  .text((node) => node.agent);
+
+var mLinkNum = {};
+for (i=0; i<links.length; i++) {
+  function isResource(resource) {
+    return resource.resource === links[i].resource;
+  }
+
+  if (i != 0 &&
+      links[i].source.id == links[i-1].source.id &&
+      links[i].target.id == links[i-1].target.id &&
+      links[i].resource == links.find(isResource).resource) {
+          links[i].linkindex = links[i-1].linkindex + 1;
+      }
+  else {links[i].linkindex = 1;};
+  
+  if(mLinkNum[links[i].target.id + "," + links[i].source.id] !== undefined){
+
+    mLinkNum[links[i].target.id + "," + links[i].source.id] = links[i].linkindex;
+  }
+  else {
+    mLinkNum[links[i].source.id + "," + links[i].target.id] = links[i].linkindex;
+  }
+};
+
+simulation.on('tick', () => {
+  circles.attr('cx', (node) => node.x).attr('cy', (node) => node.y);
+  text.attr('x', (node) => node.x).attr('y', (node) => node.y);
+  lines.attr("d", linkArc);
+});
+
+  function linkArc(d) {
+    var dx = d.target.x - d.source.x,
+        dy = d.target.y - d.source.y,
+        dr = Math.sqrt(dx * dx + dy * dy);
+    var lTotalLinkNum = mLinkNum[d.source.id + "," + d.target.id] || mLinkNum[d.target.id + "," + d.source.id];
+
+    if(lTotalLinkNum > 0)
+    {
+        dr = dr/(1 + (1/lTotalLinkNum) * (d.linkindex - 1));
+    }
+
+    return "M" + d.source.x + "," + d.source.y + 
+            "A" + dr + "," + dr + " 0 0 1," + d.target.x + "," + d.target.y + 
+            "A" + dr + "," + dr + " 0 0 0," + d.source.x + "," + d.source.y;	
+  }
+
+
+
+var zoom_handler = d3.zoom()
+  .on("zoom", zoom_actions);
+
+function zoom_actions(){
+   circles.attr("transform", d3.zoomTransform(this));
+   lines.attr("transform", d3.zoomTransform(this));
+   text.attr("transform", d3.zoomTransform(this));
+}
+
+zoom_handler(svg);    
+
+// zoomIn
+d3.select("#zoomIn").on("click", function() {
+  d3.select('svg')
+    .transition()
+    .call(zoom_handler.scaleBy, 2);
+});
+
+// zoomOut
+d3.select("#zoomOut").on("click", function() {
+  d3.select('svg')
+    .transition()
+    .call(zoom_handler.scaleBy, 0.5);
+});
+
+// resetZoom
+d3.select("#resetZoom").on("click", function() {
+  d3.select('svg')
+    .transition()
+    .call(zoom_handler.scaleTo, 1);
+});
+
+// center
+d3.select("#center").on("click", function() {
+  d3.select('svg')
+    .transition()
+    .call(zoom_handler.translateTo, 0.5 * width, 0.5 * height);
+});
+
+// panLeft
+d3.select("#panLeft").on("click", function() {
+  d3.select('svg')
+    .transition()
+    .call(zoom_handler.translateBy, -50, 0);
+});
+
+// panRight
+d3.select("#panRight").on("click", function() {
+  d3.select('svg')
+    .transition()
+    .call(zoom_handler.translateBy, 50, 0);
+});
+
+  
+  </script>
+</body>
+
 </html>
